@@ -1,0 +1,95 @@
+.logo-img {
+  margin-right: 52rem;
+}
+
+.primary-text {
+  font-size: 4.8rem;
+}
+.black-color {
+  color: black;
+}
+.white-color{
+  color: white;
+}
+.turn {
+  margin: 5rem 0rem 0rem 4rem;
+
+}
+
+.miles {
+  color: #fead1b;
+  margin: 5rem 0rem 0rem 7em;
+
+
+}
+
+.into {
+  margin: 0rem 0rem 0rem 4rem;
+
+}
+
+.money {
+  color: #9318ff;
+  margin: 0rem 0rem 0rem 6rem;
+
+}
+
+.secondary-text {
+  margin: 0rem 42rem 0rem 0rem;
+}
+
+.bg-img {
+  margin: 0rem 5rem 0rem 0rem;
+  width: 61rem;
+  height: 24.5rem;
+}
+
+.hr-tag {
+  width: 4rem;
+  margin: 0rem 1rem -2rem 13.5rem;
+
+}
+
+.input {
+  font-size: larger;
+  padding: 1rem 7rem 1rem 2rem;
+  margin: 4rem 0rem -4rem 2rem;
+  border-radius: 0.5rem;
+  border-color: white;
+}
+
+.login-btn {
+  background-color: white;
+  border-radius: 1.5rem;
+  font-size: larger;
+  display: block;
+  padding: 0.5rem 3rem 0.5rem 3rem;
+  margin: 3rem 0rem 0rem 12rem;
+}
+#submit-btn-color:hover {
+  color: white;
+  background-color: #fead1b;
+}
+.signup-background-image {
+  width: 26rem;
+  height: 32rem;
+}
+
+.login-form {
+  background-color: #9318ff;
+}
+
+.form-for-login {
+  background-image: url("C:\CarPoolApi\carpooling-app\src\Components\Assets\LoginBng.png");
+
+  width: 31rem;
+  height: 45rem;
+  margin: 4rem 0rem 0rem 0rem;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+}
+.signup-option {
+  margin: 2rem 0rem 0rem 0rem;
+}
+
