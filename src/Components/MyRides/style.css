@@ -1,5 +1,6 @@
 .my-rides-container {
     background-image: url("C:\CarPoolApi\carpooling-app\src\Components\Assets\BackGroundImg.png");
+    background-size: contain;
     /* background-attachment: fixed; */
     width: 100vw;
     height: 100vh;
@@ -10,9 +11,21 @@
 .float-left {
     float: left;
 }
-.white-color{
+
+.profile-name {
+    margin: 1rem 5rem 0rem -10rem;
+}
+
+.profile-image {
+    height: 4rem;
+    width: 3rem;
+    border-radius: 2rem;
+}
+
+.white-color {
     color: white;
 }
+
 .labels-of-card {
     line-height: 1rem;
     color: #9E9E9E;
@@ -47,4 +60,49 @@
     background-color: #fead1b;
     margin: 0rem 14rem 1rem 1.5rem;
     border-radius: 1rem;
+}
+.user-profile{
+    color: #9E9E9E;
+}
+.dropdown {
+
+    /* position: absolute; */
+
+    left: 91%;
+
+    top: 39%;
+
+    background-color: #fff;
+
+    box-shadow: 1px 1px 5px 1px #999;
+
+    display: block;
+
+    width: 10%;
+
+    padding: 0%;
+
+    color: #999;
+
+}
+
+
+
+
+
+
+li {
+
+    list-style: none;
+
+    padding: 5% 0%;
+
+    text-align: center;
+
+}
+
+li:hover {
+
+    background-color: #9318ff;
+
 }

@@ -5,6 +5,7 @@
 .primary-text {
   font-size: 4.8rem;
 }
+
 .turn {
   margin: 5rem 0rem 0rem 4rem;
 
@@ -13,11 +14,13 @@
 .orange-color {
   color: #fead1b;
 }
+
 .miles {
   margin: 5rem 0rem 0rem 7em;
 
 
 }
+
 .into {
   margin: 0rem 0rem 0rem 4rem;
 }
@@ -31,21 +34,21 @@
   margin: 0rem 42rem 0rem 0rem;
 }
 
-.bg-img {
+.signup-bg-img {
   margin: 0rem 5rem 0rem 0rem;
   width: 61rem;
   height: 24.5rem;
 }
 
-.input {
+.signup-input {
   font-size: larger;
-  padding: 1rem 7rem 1rem 2rem;
-  margin: 4rem 0rem -4rem 2rem;
+  padding: 1rem 1rem 1rem 2rem;
+  margin: 3rem 0rem -4rem 2rem;
   border-radius: 0.5rem;
   border-color: white;
 }
 
-.submit-btn {
+.signup-submit-btn {
   background-color: white;
   border-radius: 1.5rem;
   font-size: larger;
@@ -54,7 +57,7 @@
   margin: 3rem 0rem 0rem 12rem;
 }
 
-#submit-btn-colour:hover {
+#signup-submit-btn-colour:hover {
   color: white;
   background-color: #9318ff;
 }
@@ -68,7 +71,7 @@
   background-color: #fead1b;
 }
 
-.form {
+.signup-form {
   background-image: url("C:\Users\Sai Charan Reddy\source\repos\CarPoolingReactApp\src\Assets\SignUP.png");
 
   width: 31rem;
@@ -78,7 +81,64 @@
   background-size: cover;
 
 }
+
 .login-option {
   color: white;
-  margin: 2rem 0rem 0rem 0rem;
+  margin: 1rem 0rem 0rem 0rem;
+}
+
+.login-link {
+  margin-left: -3.5rem;
+  font-size: 1rem;
+  padding: 0rem 1rem 0rem 4rem;
+}
+
+.alert-message {
+  color: red;
+  margin: 1rem;
+}
+
+@media (max-width:1509px) and (min-width:1024px) {
+  .signup-bg-img {
+    margin: 0rem 5rem 0rem 0rem;
+    width: 450%;
+    height: 16.5rem;
+  }
+
+  .signup-secondary-text {
+    margin: 0rem 23rem 0rem 0rem;
+  }
+
+  .signup-form {
+    /* background-image: url(http://localhost:3000/static/media/SignUP.cd05e2a….png);  */
+    width: 20rem;
+    height: 36rem;
+    margin: 4rem 0rem 0rem 0rem;
+    background-repeat: no-repeat;
+    background-size: cover;
+  
+  }
+
+  .signup-input {
+    font-size: larger;
+    padding: 1rem 0rem 1rem 0rem;
+    margin: 2rem 0rem -3rem 2rem;
+    border-radius: 0.5rem;
+    border-color: rgb(255, 255, 255);
+  
+  }
+
+  .signup-submit-btn {
+    background-color: white;
+    border-radius: 1.5rem;
+    font-size: larger;
+    display: block;
+    padding: 0.5rem 2rem 0.5rem 3rem;
+    margin: 3rem 0rem 0rem 5rem;
+  }
+  #signup-submit-btn-colour:hover {
+    color: white;
+    background-color: #9318ff;
+  }
+  
 }

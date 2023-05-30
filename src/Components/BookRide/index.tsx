@@ -1,14 +1,204 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import logo from '../Assets/logo.png'
-import riderImage from '../Assets/charan.jpg'
-import riderImage2 from '../Assets/Pic.jpeg'
+import userImage from '../Assets/user.png'
 import '../BookRide/style.css'
-import { Container, Row, Col, Card } from "react-bootstrap";
+import { Container, Row, Col, Card, Modal } from "react-bootstrap";
 import { faFontAwesome } from "@fortawesome/free-regular-svg-icons";
-
+import IUser from "../IUser/IUser";
+import axios from "axios";
+import { format } from "date-fns";
+import UserCard from "../UserCard";
+import { Link, useNavigate } from "react-router-dom";
+import MatchedBookRides from "../MatchedBookRides";
+import MyRides from "../MyRides";
 const BookRide: React.FC = () => {
+    
+    const navigate = useNavigate();
+    var [image,setimage] = useState(userImage)
+    const [userBookingFromCity, setuserBookingFromCity] = useState<string>("Select");
+    const [fromBookingCities, setfromBookingCities] = useState([]);
+    const [userBookingToCity, setuserBookingToCity] = useState<string>("Select");
+    const [toBookingCities, settoBookingCities] = useState([])
+    const [styleButton1,setStyleButton1] =useState<any>({backgroundColor: "white"})
+    const [styleButton2,setStyleButton2] =useState<any>({backgroundColor: "white"})
+    const [styleButton3,setStyleButton3] =useState<any>({backgroundColor: "white"})
+    const [styleButton4,setStyleButton4] =useState<any>({backgroundColor: "white"})
+    const [styleButton5,setStyleButton5] =useState<any>({backgroundColor: "white"})
+    const [styleButton6,setStyleButton6] =useState<any>({backgroundColor: "white"})
+    const [styleButton7,setStyleButton7] =useState<any>({backgroundColor: "white"})
+    const [styleButton8,setStyleButton8] =useState<any>({backgroundColor: "white"})
+    const [bookingTime, setbookingTime] = useState<string>("");
+    var [userBookingFromDate, setuserBookingFromDate] = useState<string>("");
+    var [userBookingToDate, setuserBookingToDate] = useState<string>("");
+    const [seatsBooked, setseatsBooked] = useState(0);
+    var matchedRidesToBook: IUser[] = [];
+    const [allOfferedRides, setallOfferedRides] = useState(matchedRidesToBook)
+    const userData = JSON.parse(localStorage.getItem("userData")!)
+    const userName = userData.userName;
+    const userEmail = userData.emailId;
+   
+    const [openEmp, setopenEmp] = useState(false);
+    if (userData.image != '') {
+        image = userData.image;
+
+    }
+    const handleShow = () => setopenEmp(x => !x);
+
+    useEffect(() => {
+        const getCities = async () => {
+            await axios.get('https://localhost:7243/api/OfferRide/api/OfferRide/TotalCities')
+                .then((response) => {
+                    setfromBookingCities(response.data)
+                    settoBookingCities(response.data)
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        }
+        getCities();
+
+    }, [])
+    /*function to get all the cities*/
+    function displayFromCities() {
+        var str = [];
+        for (var k = 0; k < (fromBookingCities).length; k++) {
+            str.push(<option value={fromBookingCities[k]}>{fromBookingCities[k]}</option>)
+        }
+        return str;
+    }
+    function displayToCities() {
+        var str = [];
+        for (var k = 0; k < (toBookingCities).length; k++) {
+            str.push(<option value={toBookingCities[k]}>{toBookingCities[k]}</option>)
+        }
+        return str;
+    }
+    function testDate(event: any) {
+        setuserBookingFromDate(event.target.value)
+        setuserBookingToDate(event.target.value)
+    }
+    function handleBookingTimeSlots(e: any, time: any) {
+        e.preventDefault();
+        if(time=="5am-9am"){
+            setStyleButton1({
+                backgroundColor:"purple"
+            })
+            
+        }
+        if(time=="9am-12pm"){
+            setStyleButton2({
+                backgroundColor:"purple"
+            })
+            
+        }
+        if(time=="12pm-3pm"){
+            setStyleButton3({
+                backgroundColor:"purple"
+            })
+            
+        }
+        if(time=="3pm-6pm"){
+            setStyleButton4({
+                backgroundColor:"purple"
+            })
+            
+        }
+        if(time=="6pm-9pm"){
+            setStyleButton5({
+                backgroundColor:"purple"
+            })
+            
+        }
+        setbookingTime(time);
+
+    };
+    function handleSeats(e: any, seats: any) {
+        e.preventDefault();
+        if(seats=="1"){
+            setStyleButton6({
+                backgroundColor:"purple"
+            })
+            
+        }
+        if(seats=="2"){
+            setStyleButton7({
+                backgroundColor:"purple"
+            })
+            
+        }
+        if(seats=="3"){
+            setStyleButton8({
+                backgroundColor:"purple"
+            })
+            
+        }
+        setseatsBooked(seats);
+    }
+    function matchedRide(e: any) {
+        // e.preventDefault();
+        var fromBookingTime = bookingTime.split("-")[0];
+        var toBookingTime = bookingTime.split("-")[1];
+        if (toBookingTime.endsWith("pm")) {
+            toBookingTime = toBookingTime.slice(0, -2);
+            if (toBookingTime != '12') {
+                var intTime = 12 + parseInt(toBookingTime);
+                toBookingTime = intTime.toString();
+            }
+        }
+        else {
+            toBookingTime = toBookingTime.slice(0, -2);
+        }
+        if (fromBookingTime.endsWith("pm")) {
+            fromBookingTime = fromBookingTime.slice(0, -2);
+            if (fromBookingTime != '12') {
+                var intTime = 12 + parseInt(fromBookingTime);
+                fromBookingTime = intTime.toString();
+            }
+
+        }
+        else {
+            fromBookingTime = fromBookingTime.slice(0, -2);
+        }
+
+        var tempBookingFromDate = userBookingFromDate.split("-");
+        setuserBookingFromDate(format(new Date(parseInt(tempBookingFromDate[0]), parseInt(tempBookingFromDate[1]) - 1, parseInt(tempBookingFromDate[2]), parseInt(fromBookingTime)), "yyyy-MM-dd hh:mm:ss").replace(" ", "T"));
+        var tempBookingToDate = userBookingFromDate.split("-");
+        setuserBookingToDate(format(new Date(parseInt(tempBookingToDate[0]), parseInt(tempBookingToDate[1]) - 1, parseInt(tempBookingToDate[2]), parseInt(toBookingTime)), "yyyy-MM-dd hh:mm:ss").replace(" ", "T"));
+
+        console.log(userBookingToDate, "charan");
+        console.log(userBookingFromDate);
+        e.preventDefault();
+    }
+    const addBookRideBackend = async () => {
+
+        await axios.post('https://localhost:7243/api/OfferRide/api/OfferRide/MatchedRide',
+            {
+                "sourceId": fromBookingCities.findIndex((x) => x == userBookingFromCity),
+                "destinationId": toBookingCities.findIndex((x) => x == userBookingToCity),
+                "fromDate": userBookingFromDate,
+                "toDate": userBookingToDate,
+                "seatsBooked": seatsBooked,
+            }
+
+        )
+
+            .then((response) => {
+                setallOfferedRides(response.data)
+                if(response.data==""){
+                    window.alert("No matches found")
+                }
+            });
+        console.log("mm", matchedRidesToBook)
+
+    }
+    function logOutUser() {
+        localStorage.removeItem("userData")
+    }
+    
+
     return (
+
         <Container fluid className='book-ride-container'>
             <div className="book-ride-form">
                 <div>
@@ -16,22 +206,51 @@ const BookRide: React.FC = () => {
                         <Row className='logo-bookride'>
                             <Col sm={1}>
                                 <div>
-                                    <img className='logo-img-dashboard' src={logo} alt="logo" />
+                                    <img onClick={() => {
+
+                                        navigate("/login")
+                                    }} className='logo-img-dashboard' src={logo} alt="logo" />
                                 </div>
+                            </Col>
+                            <Col sm={11} >
+                                <h3 className="profile-name float-right">{userName}</h3>
+                                <img onClick={() => {
+                                    handleShow()
+                                }} className="profile-image float-right" src={image} alt="profile" />
+
+                                {openEmp && <div className="dropdown">
+                                    <li><Link to={`/UserProfile`} className="user-profile">Profile</Link></li>
+
+
+                                    <li onClick={() => {
+                                    }}
+                                    >My Rides</li>
+
+                                    <li onClick={() => {
+                                        logOutUser()
+                                        navigate("/login")
+
+                                    }}>Logout</li>
+                                </div>}
                             </Col>
 
                         </Row>
                         <Row>
-                            <Col sm={4} className="book-ride-card-column">
+                            <Col sm={4} lg={6} xl={4} className="book-ride-card-column">
 
-                                <Card>
+                                <Card className="booking-card">
                                     <div className="title float-left">
                                         <span >
-                                           <h1 className="title float-left">Book a Ride</h1> 
+                                            <h1 className="title float-left">Book a Ride</h1>
+
                                         </span>
                                         <span>
                                             <label className="switch float-right">
-                                                <input type="checkbox" />
+                                                <input onClick={() => {
+                                        
+                                        navigate("/offerride")
+
+                                    }} type="checkbox" />
                                                 <span className="slider round"></span>
                                             </label>
                                         </span>
@@ -45,15 +264,27 @@ const BookRide: React.FC = () => {
                                                 <form className="form-for-booking">
                                                     <div className="form-group">
                                                         <label className="from-label form-lables float-left">From</label>
-                                                        <input className="form-control no-border" />
+                                                        <select name="employeeDepartment" className="form-field-value" value={userBookingFromCity}
+                                                            onChange={(event) => setuserBookingFromCity(event.target.value)}>
+                                                            <option className="dropdown-options" value="Select">Select</option>
+                                                            {displayFromCities()}
+                                                        </select>
+
                                                     </div>
                                                     <div className="form-group">
                                                         <label className="to-label form-lables float-left">To</label>
-                                                        <input className="form-control no-border" />
+                                                        <select name="employeeDepartment" className="form-field-value" value={userBookingToCity}
+                                                            onChange={(event) => setuserBookingToCity(event.target.value)}>
+                                                            <option className="dropdown-options" value="Select">Select</option>
+                                                            {displayToCities()}
+                                                        </select>
+
                                                     </div>
                                                     <div className="form-group">
+
                                                         <label className="date-label form-lables float-left">Date</label>
-                                                        <input className="form-control no-border" />
+                                                        <input type="date" min={new Date().toISOString().split('T')[0]} name="Date" className="form-control no-border" value={userBookingFromDate}
+                                                            onChange={(event) => { testDate(event) }} />
                                                     </div>
                                                     <div className="form-group">
                                                         <Row>
@@ -61,27 +292,56 @@ const BookRide: React.FC = () => {
                                                         </Row>
                                                         <Row>
                                                             <div>
-                                                                <button type="submit" className="time-slot-btn btn-default black-color" id="time-slots-btn">5am-9am</button>
+                                                                <button value={bookingTime} style={styleButton1} onClick={(event) => { handleBookingTimeSlots(event, "5am-9am") }} className="time-slot-btn btn-default black-color time-slots-btns">5am-9am</button>
 
-                                                                <button type="submit" className="time-slot-btn btn-default black-color" id="time-slots-btn">9am-12pm</button>
+                                                                <button value={bookingTime} style={styleButton2} onClick={(event) => { handleBookingTimeSlots(event, "9am-12pm") }} className="time-slot-btn btn-default black-color time-slots-btns">9am-12pm</button>
 
-                                                                <button type="submit" className="time-slot-btn btn-default black-color" id="time-slots-btn">12pm-3pm</button>
-                                                              
+                                                                <button value={bookingTime} style={styleButton3} onClick={(event) => { handleBookingTimeSlots(event, "12pm-3pm") }} className="time-slot-btn btn-default black-color time-slots-btns">12pm-3pm</button>
+
 
                                                             </div>
                                                         </Row>
+
                                                         <Row>
                                                             <div>
-                                                                <button type="submit" className="time-slots-btn btn-default black-color" id="time-slots-btn">3pm-6pm</button>
 
-                                                                <button type="submit" className="time-slots-btn btn-default black-color" id="time-slots-btn">6pm-9pm</button>
+                                                                <button value={bookingTime} style={styleButton4} onClick={(event) => { handleBookingTimeSlots(event, "3pm-6pm") }} className="time-slots-btn btn-default black-color time-slots-btns">3pm-6pm</button>
+
+                                                                <button value={bookingTime} style={styleButton5} onClick={(event) => { handleBookingTimeSlots(event, "6pm-9pm") }} className="time-slots-btn btn-default black-color time-slots-btns">6pm-9pm</button>
+
+
+                                                            </div>
+                                                        </Row>
+                                                        <Col sm={7}>
+                                                            <label className="available-seats-label form-lables float-left">Book Seats</label>
+                                                        </Col>
+                                                        <Row>
+                                                            <div>
+                                                                <button value={seatsBooked} style={styleButton6} onClick={(event) => { handleSeats(event, 1) }} className="seat-booked-slot-btn btn-default black-color seat-slots-btns">1</button>
+                                                                <button value={seatsBooked} style={styleButton7} onClick={(event) => { handleSeats(event, 2) }} className="seat-booked-slot-btn btn-default black-color seat-slots-btns">2</button>
+                                                                <button value={seatsBooked} style={styleButton8} onClick={(event) => { handleSeats(event, 3) }} className="seat-booked-slot-btn btn-default black-color seat-slots-btns">3</button>
 
                                                             </div>
                                                         </Row>
 
 
                                                     </div>
-                                                    <button type="submit" className="btn btn-default">Submit</button>
+                                                    <button
+                                                        onClick={(event) => {
+                                                            matchedRide(event);
+
+                                                        }}>Set Time By click</button>
+                                                    <input
+                                                        type="button"
+                                                        className="btn btn-default"
+
+                                                        onClick={() => {
+
+                                                            addBookRideBackend();
+                                                        }}
+                                                        value="Submit"
+                                                    />
+
                                                 </form>
                                             </div>
 
@@ -106,174 +366,40 @@ const BookRide: React.FC = () => {
                                     </Row>
                                 </Card>
                             </Col>
-                            <Col sm={7} className="matched-rides-card">
+                            <Col sm={7} lg={6} className="matched-rides-card">
                                 <div>
                                     <h1 className="ride-mathes purple-color">Your Matches</h1>
                                 </div>
                                 <Row>
-                                    <Col sm={6}>
+                                    <div className="total-employees display-employees ">
+                                        {allOfferedRides.map((rd: IUser, index: number) => {
+                                            return (
+                                                <UserCard
+                                                    key={index}
+                                                    rideId={rd.rideId}
+                                                    rideProviderId={rd.rideProviderId}
 
-                                        <Card className="mathed-card">
-
-
-                                            <div>
-                                                <h1 className="rider-name float-left">Clint Barton</h1>
-                                                <span>
-                                                    <img className="rider-image float-right" src={riderImage} alt="profile" />
-                                                </span>
-                                            </div>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="from-location labels-of-card float-left">From</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="to-location labels-of-card float-left">To</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="from-address values-of-card float-left">cincinnati</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="to-address values-of-card float-left">Minneapolis</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="date labels-of-card float-left">Date</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="time labels-of-card float-left">Time</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="date-of-ride values-of-card float-left">xx/mm/yyyy</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="time-of-ride values-of-card float-left">5am-9am</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="price labels-of-card float-left">Price</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="seat-availability labels-of-card float-left">Seat Availability</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="price-for-ride values-of-card float-left">180$</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="seats-available-in-vehicle values-of-card float-left">02</p>
-                                                </Col>
-                                            </Row>
+                                                    sourceId={rd.sourceId}
 
 
-                                        </Card>
-                                    </Col>
-                                    <Col sm={6}>
+                                                    destinationId={rd.destinationId}
 
-                                        <Card className="mathed-card">
+                                                    date={rd.date}
 
+                                                    fair={rd.fair}
 
-                                            <div>
-                                                <h1 className="rider-name">Clint Barton</h1>
-                                                <span>
-                                                    <img className="rider-image" src={riderImage2} alt="profile" />
-                                                </span>
-                                            </div>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="from-location labels-of-card float-left">From</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="to-location labels-of-card float-left">To</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="from-address values-of-card float-left">cincinnati</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="to-address values-of-card float-left">Minneapolis</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="date labels-of-card float-left">Date</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="time labels-of-card float-left">Time</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="date-of-ride values-of-card float-left">xx/mm/yyyy</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="time-of-ride values-of-card float-left">5am-9am</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="price labels-of-card float-left">Price</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="seat-availability labels-of-card float-left">Seat Availability</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="price-for-ride values-of-card float-left">180$</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="seats-available-in-vehicle values-of-card float-left">02</p>
-                                                </Col>
-                                            </Row>
+                                                    totalSeats={rd.totalSeats}
 
+                                                    availableSeats={rd.availableSeats}
 
-                                        </Card>
-                                    </Col>
+                                                    time={rd.time}
 
+                                                    seatsBooked={seatsBooked}
+
+                                                />
+                                            );
+                                        })}
+                                    </div>
                                 </Row>
 
                             </Col>
@@ -285,4 +411,5 @@ const BookRide: React.FC = () => {
 
     )
 }
+
 export default BookRide;

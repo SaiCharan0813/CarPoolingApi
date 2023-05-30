@@ -1,35 +1,53 @@
-.card {
+/* .offering-ride-card {
     margin: -1rem 0rem 0rem 2rem;
     padding: 2rem 1rem 1rem 1rem;
-}
+} */
 .offer-ride-container {
     background-image: url("C:\CarPoolApi\carpooling-app\src\Components\Assets\BackGroundImg.png");
+    background-size: contain;
+    background-size: contain;
     width: 100vw;
     height: 100vh;
     background-repeat: no-repeat;
     background-position: bottom;
 }
-.float-left{
+.float-left {
     float: left;
 }
-.black-color{
+
+.profile-name {
+    margin: 1rem 5rem 0rem -10rem;
+}
+
+.profile-image {
+    height: 4rem;
+    width: 3rem;
+    border-radius: 2rem;
+}
+
+.black-color {
     color: black;
 }
-.purple-color{
+
+.purple-color {
     color: #9318ff;
 }
+
 .title {
     margin-left: 0.4rem;
     text-align: left;
 }
+
 .title-text {
     margin-left: 1rem;
     text-align: left;
 }
+
 .logo-offerride {
     padding-top: 4rem;
     padding-bottom: 4rem;
 }
+
 .no-border {
     border-bottom: -1rem;
     border-top: 0rem;
@@ -37,24 +55,25 @@
     border-left: 0rem;
     margin-left: 1rem;
 }
-.no-border-for-price {
-    border: 0rem;
-    border-top: 0rem;
-    border-right: 0rem;
-    border-left: 0rem;
-    margin-left: 1rem;
+
+.border-for-price {
+    margin-left: 2rem;
 }
+
 .form-lables {
     float: left;
     padding: 0rem 7rem 0rem 1rem;
     color: #9E9E9E;
 }
-.next{
-margin: 1rem 0rem 5.3rem 17rem
+
+.next {
+    margin: 1rem 0rem 3.6rem 17rem;
 }
+
 .startingPoint {
     display: flex;
 }
+
 .btn {
     color: white;
     background-color: #fead1b;
@@ -64,28 +83,34 @@ margin: 1rem 0rem 5.3rem 17rem
     padding: 0.5rem 1.5rem 0.5rem 1.5rem;
     margin: 1rem 0rem 2rem 1rem;
 }
+
 .time-slot-btn {
     background-color: white;
     border-radius: 1.5rem;
     margin: 0rem 0rem 0rem 1.9rem;
 }
-#time-slots-btn:hover {
+
+.time-slots-btns:hover {
     background-color: #9318ff;
     color: white;
 }
-#seat-slots-btn:hover {
+
+.seat-slots-btns:hover {
     background-color: #9318ff;
     color: white;
 }
+
 .seat-slot-btn {
     background-color: white;
     border-radius: 1.5rem;
     margin: -4rem 3rem 0rem -1rem;
     padding: 0.5rem 1rem 0.5rem 1rem;
 }
+
 .available-seats-label {
     margin: 0rem -2rem 1rem -0.2rem;
 }
+
 .price-for-ride-label {
     margin: 0rem 0rem 1rem 4.8rem;
 }
@@ -95,11 +120,13 @@ li {
     font-size: 2rem;
     height: 9%;
 }
+
 #add {
 
     list-style: none;
 
 }
+
 .i {
 
     font-size: 20px;
@@ -107,12 +134,14 @@ li {
     color: #9318ff;
 
 }
+
 .leftcard {
 
     padding-left: 0%;
 
     padding-top: 9%
 }
+
 .switch {
 
     position: relative;
@@ -127,6 +156,7 @@ li {
 
     margin-right: 7%;
 }
+
 .switch input {
 
     opacity: 0;
@@ -136,6 +166,7 @@ li {
     height: 0;
 
 }
+
 .slider {
 
     text-align: right;
@@ -159,6 +190,7 @@ li {
     transition: .4s;
 
 }
+
 .slider:before {
 
     position: absolute;
@@ -180,16 +212,19 @@ li {
     transition: .4s;
 
 }
+
 input:checked+.slider {
 
     background-color: #9318ff;
 
 }
+
 input:focus+.slider {
 
     box-shadow: 0 0 1px #9318ff;
 
 }
+
 input:checked+.slider:before {
 
     -webkit-transform: translateX(26px);
@@ -199,12 +234,36 @@ input:checked+.slider:before {
     transform: translateX(26px);
 
 }
+
 .slider.round {
 
     border-radius: 34px;
 
 }
+
 .slider.round:before {
 
     border-radius: 50%;
+}
+
+.form-field-value {
+    width: 100%;
+    height: 2rem;
+    padding: 1px 30px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    background-color: white;
+    border-radius: 25px;
+    box-sizing: border-box;
+}
+
+.dropdown-options select option {
+    width: 100%;
+    height: 1vh;
+    padding: 12px 20px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }

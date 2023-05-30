@@ -1,0 +1,47 @@
+.user-image {
+  height: 13rem;
+  width: 11rem;
+  border-radius: -1rem;
+  margin: 0rem 28rem 1rem 1rem;
+}
+
+.input {
+  font-size: larger;
+  padding: 1rem 7rem 1rem 2rem;
+  margin: 4rem 0rem -4rem 2rem;
+  border-radius: 0.5rem;
+  border-color: white;
+}
+
+.submit-btn {
+  background-color: white;
+  border-radius: 1.5rem;
+  font-size: larger;
+  display: block;
+  padding: 0.5rem 3rem 0.5rem 3rem;
+  margin: 3rem 0rem 0rem 18rem;
+}
+
+#submit-btn-colour:hover {
+  color: white;
+  background-color: #9318ff;
+}
+
+.form-user-profile {
+  /* background-image: url("C:\Users\Sai Charan Reddy\source\repos\CarPoolingReactApp\src\Assets\SignUP.png"); */
+  background-color: lightgoldenrodyellow;
+    width: 47rem;
+    height: 40rem;
+    margin: 4rem 1rem 0rem 20rem;
+    padding: 1rem 1rem 1rem 1rem;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+.form-field-image{
+ margin: 1rem 1rem 1rem 1rem;
+}
+.back-button{
+  position: relative;
+  left: -10rem;
+}

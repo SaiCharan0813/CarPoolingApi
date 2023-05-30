@@ -1,25 +1,105 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import logo from '../Assets/logo.png'
-import riderImage from '../Assets/charan.jpg'
-import riderImage2 from '../Assets/Pic.jpeg'
+import userImage from '../Assets/user.png'
 import '../MyRides/style.css'
 import { Container, Row, Col, Card } from "react-bootstrap";
-import { faFontAwesome } from "@fortawesome/free-regular-svg-icons";
+import axios from "axios";
+import IUser from "../IUser/IUser";
+import MatchedOfferRides from "../MatchedOfferRides";
+import MatchedBookRides from "../MatchedBookRides";
+import { Link, useNavigate } from "react-router-dom";
 
 const MyRides: React.FC = () => {
+    const navigate = useNavigate();
+    var [image,setimage] = useState(userImage)
+    var matchedRidesToBook: IUser[] = [];
+    const [allOfferRides, setallOfferRides] = useState(matchedRidesToBook)
+    const [allBookRides, setallBookRides] = useState(matchedRidesToBook)
+    const [openEmp, setopenEmp] = useState(false);
+    const userData = JSON.parse(localStorage.getItem("userData")!)
+    const userName = userData.userName;
+    if (userData.image != '') {
+        image = userData.image;
+
+    }
+    const handleShow = () => setopenEmp(x => !x);
+
+    const matchedOfferRide = async () => {
+        await axios.post('https://localhost:7243/GetMatchedOfferedRides',
+            {
+                "rideProviderId": localStorage.getItem("loginId"),
+            }
+
+        )
+
+            .then((response) => {
+                setallOfferRides(response.data)
+                console.log("offer", response.data)
+            });
+
+
+    }
+    const matchedBookRide = async () => {
+        await axios.post('https://localhost:7243/GetMatchedBookRides',
+            {
+                "customerId": localStorage.getItem("loginId"),
+            }
+
+        )
+
+            .then((response) => {
+                setallBookRides(response.data)
+                console.log("book", response.data)
+            });
+
+
+    }
+    function logOutUser() {
+        localStorage.removeItem("userData")
+    }
+
     return (
         <Container fluid className='my-rides-container'>
+
             <div className="book-ride-form">
                 <div>
                     <Row>
                         <Row className='logo-bookride'>
                             <Col sm={1}>
                                 <div>
-                                    <img className='logo-img-dashboard' src={logo} alt="logo" />
+                                    <img onClick={() => {
+
+                                        navigate("/login")
+                                    }} className='logo-img-dashboard' src={logo} alt="logo" />
                                 </div>
                             </Col>
+                            <Col sm={11}>
+                                <div>
+                                    <h3 className="profile-name float-right">{userName}</h3>
+                                    <img onClick={() => {
+                                        handleShow()
+                                    }} className="profile-image float-right" src={image} alt="profile" />
+                                </div>
+                                {openEmp && <div className="dropdown">
+                                    <li><Link to={`/UserProfile`} className="user-profile">Profile</Link></li>
 
+
+                                    <li onClick={() => {
+                                        matchedOfferRide()
+                                        matchedBookRide()
+                                    }}
+                                    >My Rides</li>
+
+                                    <li onClick={() => {
+                                        logOutUser()
+                                        navigate("/login")
+
+                                    }}>Logout</li>
+                                </div>}
+
+
+                            </Col>
                         </Row>
                         <Row>
                             <Col sm={4} className="matched-rides-card">
@@ -27,344 +107,79 @@ const MyRides: React.FC = () => {
                                     <h4 className="book-ride-mathes white-color">Book Rides</h4>
                                 </div>
                                 <Row>
-                                    <Row>
+                                    <Col>
+                                        <div className="total-employees display-employees ">
+                                            {allBookRides.map((rd: IUser, index: number) => {
+                                                return (
+                                                    <MatchedBookRides
+                                                        key={index}
+                                                        rideId={rd.rideId}
+                                                        rideProviderId={rd.rideProviderId}
 
-                                        <Card className="matched-card">
-
-
-                                            <div>
-                                                <h1 className="rider-name float-left">Clint Barton</h1>
-                                                <span>
-                                                    <img className="rider-image" src={riderImage} alt="profile" />
-                                                </span>
-                                            </div>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="from-location labels-of-card float-left">From</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="to-location labels-of-card float-left">To</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="from-address values-of-card float-left">cincinnati</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="to-address values-of-card float-left">Minneapolis</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="date labels-of-card float-left">Date</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="time labels-of-card float-left">Time</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="date-of-ride values-of-card float-left">xx/mm/yyyy</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="time-of-ride values-of-card float-left">5am-9am</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="price labels-of-card float-left">Price</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="seat-availability labels-of-card float-left">Seat Availability</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="price-for-ride values-of-card float-left">180$</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="seats-available-in-vehicle values-of-card float-left">02</p>
-                                                </Col>
-                                            </Row>
+                                                        sourceId={rd.sourceId}
 
 
-                                        </Card>
-                                    </Row>
-                                    <Row >
+                                                        destinationId={rd.destinationId}
 
-                                        <Card className="matched-card">
+                                                        date={rd.date}
 
+                                                        fair={rd.fair}
 
-                                            <div>
-                                                <h1 className="rider-name float-left">Clint Barton</h1>
-                                                <span>
-                                                    <img className="rider-image" src={riderImage2} alt="profile" />
-                                                </span>
-                                            </div>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="from-location labels-of-card float-left">From</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="to-location labels-of-card float-left">To</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="from-address values-of-card float-left">cincinnati</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="to-address values-of-card float-left">Minneapolis</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="date labels-of-card float-left">Date</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="time labels-of-card float-left">Time</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="date-of-ride values-of-card float-left">xx/mm/yyyy</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="time-of-ride values-of-card float-left">5am-9am</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="price labels-of-card float-left">Price</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="seat-availability labels-of-card float-left">Seat Availability</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="price-for-ride values-of-card float-left">180$</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="seats-available-in-vehicle values-of-card float-left">02</p>
-                                                </Col>
-                                            </Row>
+                                                        totalSeats={rd.totalSeats}
 
+                                                        availableSeats={rd.availableSeats}
+                                                        seatsBooked={rd.seatsBooked}
 
-                                        </Card>
-                                    </Row>
-
+                                                        time={rd.time}
+                                                    />
+                                                );
+                                            })}
+                                        </div>
+                                    </Col>
                                 </Row>
-
                             </Col>
                             <Col sm={4} className="matched-rides-card">
                                 <div>
                                     <h4 className="offered-ride-mathes white-color">Offered Rides</h4>
                                 </div>
                                 <Row>
-                                    <Row>
+                                    <div className="total-employees display-employees ">
+                                        {allOfferRides.map((rd: IUser, index: number) => {
+                                            return (
+                                                <MatchedOfferRides
+                                                    key={index}
+                                                    rideId={rd.rideId}
+                                                    rideProviderId={rd.rideProviderId}
 
-                                        <Card className="matched-card">
-
-
-                                            <div>
-                                                <h1 className="rider-name float-left">Clint Barton</h1>
-                                                <span>
-                                                    <img className="rider-image" src={riderImage} alt="profile" />
-                                                </span>
-                                            </div>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="from-location labels-of-card float-left">From</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="to-location labels-of-card float-left">To</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="from-address values-of-card float-left">cincinnati</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="to-address values-of-card float-left">Minneapolis</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="date labels-of-card float-left">Date</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="time labels-of-card float-left">Time</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="date-of-ride values-of-card float-left">xx/mm/yyyy</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="time-of-ride values-of-card float-left">5am-9am</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="price labels-of-card float-left">Price</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="seat-availability labels-of-card float-left">Seat Availability</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="price-for-ride values-of-card float-left">180$</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="seats-available-in-vehicle values-of-card float-left">02</p>
-                                                </Col>
-                                            </Row>
+                                                    sourceId={rd.sourceId}
 
 
-                                        </Card>
-                                    </Row>
-                                    <Row >
+                                                    destinationId={rd.destinationId}
 
-                                        <Card className="matched-card">
-                                            <div>
-                                                <h1 className="rider-name float-left">Clint Barton</h1>
-                                                <span>
-                                                    <img className="rider-image" src={riderImage2} alt="profile" />
-                                                </span>
-                                            </div>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="from-location labels-of-card float-left">From</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="to-location labels-of-card float-left">To</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="from-address values-of-card float-left">cincinnati</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="to-address values-of-card float-left">Minneapolis</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="date labels-of-card float-left">Date</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="time labels-of-card float-left">Time</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="date-of-ride values-of-card float-left">xx/mm/yyyy</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="time-of-ride values-of-card float-left">5am-9am</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="price labels-of-card float-left">Price</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="seat-availability labels-of-card float-left">Seat Availability</p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col sm={4}>
-                                                    <p className="price-for-ride values-of-card float-left">180$</p>
-                                                </Col>
-                                                <Col sm={3}>
-                                                    <p></p>
-                                                </Col>
-                                                <Col sm={5}>
-                                                    <p className="seats-available-in-vehicle values-of-card float-left">02</p>
-                                                </Col>
-                                            </Row>
+                                                    date={rd.date}
 
+                                                    fair={rd.fair}
 
-                                        </Card>
-                                    </Row>
+                                                    totalSeats={rd.totalSeats}
+
+                                                    availableSeats={rd.availableSeats}
+
+                                                    time={rd.time}
+
+                                                />
+                                            );
+                                        })}
+                                    </div>
 
                                 </Row>
-
                             </Col>
+
                         </Row>
+
                     </Row>
-                </div>
+
+
+                </div >
             </div >
         </Container >
 
