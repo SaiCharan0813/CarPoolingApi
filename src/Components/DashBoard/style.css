@@ -1,6 +1,5 @@
 .dash-board-container {
-  background-image: url("C:\Users\saicharan.r\Downloads\CarPoolingApi-Review1\CarPoolingApi-Review1\src\Components\Assets\DashBoardBgImg.png");
-  background-size: contain;
+  background-image: url("C:\CarPoolApi\carpooling-app\src\Components\Assets\DashBoardBgImg.png");
   width: 100vw;
   height: 100vh;
   background-repeat: no-repeat;
@@ -12,14 +11,6 @@
   }
   .logo-dashboard{
     float: left;
-}
-.profile-name{
-  margin: 1rem 5rem 0rem -10rem;
-}
-.profile-image {
-  height: 4rem;
-  width: 3rem;
-  border-radius: 2rem;
 }
 .user{
   margin-left: -14.5rem;
@@ -54,7 +45,4 @@ a{
    background-color:#fead1b;
    color: white;
   
-  }
-  @media (max-width:1509px) and (min-width:1024px) {
-
   }
